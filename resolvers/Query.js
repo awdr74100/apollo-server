@@ -1,6 +1,11 @@
 const Query = {
   hello: (parent, args, context) => "World",
-  products: (parent, args, { products }) => products,
+  products: (parent, { filter }, { products }) => {
+    if (filter?.onSale !== undefined) {
+      return products.filter((product) => product.onSale === filter.onSale);
+    }
+    return products;
+  },
   product: (parent, { id }, { products }) => {
     return products.find((product) => product.id === id);
   },
