@@ -48,6 +48,23 @@ const Mutation = {
 
     return newReview;
   },
+  deleteCategory: (parent, { id }, { categories, products }) => {
+    const deleteCategoryIndex = categories.findIndex(
+      (category) => category.id === id
+    );
+
+    if (deleteCategoryIndex !== -1) {
+      categories.splice(deleteCategoryIndex, 1);
+    }
+
+    products.forEach((product) => {
+      if (product.categoryId === id) {
+        product.categoryId = null;
+      }
+    });
+
+    return true;
+  },
 };
 
 module.exports = Mutation;

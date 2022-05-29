@@ -13,6 +13,7 @@ const typeDefs = gql`
     addProduct(input: AddProductInput!): Product!
     addCategory(input: AddCategoryInput!): Category!
     addReview(input: AddReviewInput!): Review!
+    deleteCategory(id: ID!): Boolean!
   }
 
   type Product {
