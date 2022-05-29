@@ -10,7 +10,9 @@ const typeDefs = gql`
   }
 
   type Mutation {
+    addProduct(input: AddProductInput!): Product!
     addCategory(input: AddCategoryInput!): Category!
+    addReview(input: AddReviewInput!): Review!
   }
 
   type Product {
@@ -44,8 +46,26 @@ const typeDefs = gql`
     avgRating: Int
   }
 
+  input AddProductInput {
+    name: String!
+    description: String!
+    quantity: Int!
+    price: Float!
+    image: String!
+    onSale: Boolean!
+    categoryId: String!
+  }
+
   input AddCategoryInput {
     name: String!
+  }
+
+  input AddReviewInput {
+    date: String!
+    title: String!
+    comment: String!
+    rating: Int!
+    productId: ID!
   }
 `;
 
