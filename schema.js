@@ -15,6 +15,7 @@ const typeDefs = gql`
     addReview(input: AddReviewInput!): Review!
     deleteProduct(id: ID!): Boolean!
     deleteCategory(id: ID!): Boolean!
+    deleteReview(id: ID!): Boolean!
   }
 
   type Product {
