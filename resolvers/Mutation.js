@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require("uuid");
 
 const Mutation = {
-  addCategory: (parent, { input }, { categories }) => {
+  addCategory: (parent, { input }, { db }) => {
     const { name } = input;
 
     const newCategory = {
@@ -9,11 +9,11 @@ const Mutation = {
       name,
     };
 
-    categories.push(newCategory);
+    db.categories.push(newCategory);
 
     return newCategory;
   },
-  addProduct: (parent, { input }, { products }) => {
+  addProduct: (parent, { input }, { db }) => {
     const { name, description, quantity, price, image, onSale, categoryId } =
       input;
 
@@ -28,11 +28,11 @@ const Mutation = {
       categoryId,
     };
 
-    products.push(newProduct);
+    db.products.push(newProduct);
 
     return newProduct;
   },
-  addReview: (parent, { input }, { reviews }) => {
+  addReview: (parent, { input }, { db }) => {
     const { date, title, comment, rating, productId } = input;
 
     const newReview = {
@@ -44,23 +44,25 @@ const Mutation = {
       productId,
     };
 
-    reviews.push(newReview);
+    db.reviews.push(newReview);
 
     return newReview;
   },
-  deleteCategory: (parent, { id }, { categories, products }) => {
-    const deleteCategoryIndex = categories.findIndex(
-      (category) => category.id === id
-    );
+  deleteProduct: (parent, { id }, { db }) => {
+    db.products = db.products.filter((product) => product.id !== id);
 
-    if (deleteCategoryIndex !== -1) {
-      categories.splice(deleteCategoryIndex, 1);
-    }
+    db.reviews = db.reviews.filter((review) => review.productId !== id);
 
-    products.forEach((product) => {
+    return true;
+  },
+  deleteCategory: (parent, { id }, { db }) => {
+    db.categories = db.categories.filter((category) => category.id !== id);
+
+    db.products = db.products.map((product) => {
       if (product.categoryId === id) {
-        product.categoryId = null;
+        return { ...product, categoryId: null };
       }
+      return product;
     });
 
     return true;

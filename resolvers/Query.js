@@ -1,7 +1,7 @@
 const Query = {
   hello: (parent, args, context) => "World",
-  products: (parent, { filter }, { products, reviews }) => {
-    let filteredProducts = products;
+  products: (parent, { filter }, { db }) => {
+    let filteredProducts = db.products;
 
     if (filter) {
       const { onSale, avgRating } = filter;
@@ -14,7 +14,7 @@ const Query = {
 
       if ([1, 2, 3, 4, 5].includes(avgRating)) {
         filteredProducts = filteredProducts.filter((product) => {
-          const [sumRating, numberOfReviews] = reviews.reduce(
+          const [sumRating, numberOfReviews] = db.reviews.reduce(
             (accumulator, review) => {
               if (review.productId === product.id) {
                 return [accumulator[0] + review.rating, accumulator[1] + 1];
@@ -32,12 +32,14 @@ const Query = {
 
     return filteredProducts;
   },
-  product: (parent, { id }, { products }) => {
-    return products.find((product) => product.id === id);
+  product: (parent, { id }, { db }) => {
+    return db.products.find((product) => product.id === id);
   },
-  categories: (parent, args, { categories }) => categories,
-  category: (parent, { id }, { categories }) => {
-    return categories.find((category) => category.id === id);
+  categories: (parent, args, { db }) => {
+    return db.categories;
+  },
+  category: (parent, { id }, { db }) => {
+    return db.categories.find((category) => category.id === id);
   },
 };
 
