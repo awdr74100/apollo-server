@@ -16,6 +16,7 @@ const typeDefs = gql`
     deleteProduct(id: ID!): Boolean!
     deleteCategory(id: ID!): Boolean!
     deleteReview(id: ID!): Boolean!
+    updateCategory(id: ID!, input: UpdateCategoryInput!): Category!
   }
 
   type Product {
@@ -60,6 +61,10 @@ const typeDefs = gql`
   }
 
   input AddCategoryInput {
+    name: String!
+  }
+
+  input UpdateCategoryInput {
     name: String!
   }
 

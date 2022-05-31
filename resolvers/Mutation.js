@@ -72,6 +72,16 @@ const Mutation = {
 
     return true;
   },
+  updateCategory: (parent, { id, input }, { db }) => {
+    const index = db.categories.findIndex((category) => category.id === id);
+
+    db.categories[index] = {
+      ...db.categories[index],
+      ...input,
+    };
+
+    return db.categories[index];
+  },
 };
 
 module.exports = Mutation;
